@@ -1,3 +1,15 @@
-This is the repository to track and store work related to NITK IEEE HPC group's project.
+Ray Tracer
+==========
 
-Currently we are working on parallelising an existing sequential algorithm and thus critically measure the speed-up achieved in this process.
+## Dependencies
+
+* OpenGL environment
+* g++
+
+## Building
+
+`g++ main.cpp ray.cpp shading.cpp sphere.cpp vectors.cpp -o main.app -lglut -lGL -lGLU -lm`
+
+## Running
+
+`./main.app`
