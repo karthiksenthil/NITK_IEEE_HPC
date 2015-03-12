@@ -58,7 +58,7 @@ struct RAY
     VECTOR3D direction;
 };
 
-struct VEC_BASIS
+struct BASIS
 {
     VECTOR3D u;
     VECTOR3D v;

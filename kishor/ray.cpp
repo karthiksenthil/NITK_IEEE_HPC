@@ -2,7 +2,7 @@
 #include "vectors.h"
 
 
-void compute_ray(RAY* ray, VECTOR3D* view_point, VIEWPORT* viewport, PIXEL* pixel, VEC_BASIS* camera_frame, double dist)
+void compute_ray(RAY* ray, VECTOR3D* view_point, VIEWPORT* viewport, PIXEL* pixel, BASIS* camera_frame, double dist)
 {
     float u, v;
     VECTOR3D v1, v2, v3, v4, dir;
