@@ -8,8 +8,8 @@ Ray Tracer
 
 ## Building
 
-`g++ main.cpp ray.cpp shading.cpp sphere.cpp vectors.cpp -o main.app -lglut -lGL -lGLU -lm`
+`$ g++ main.cpp ray.cpp shading.cpp sphere.cpp vectors.cpp -o main.app -lglut -lGL -lGLU -lm`
 
 ## Running
 
-`./main.app`
+`$ ./main.app`
