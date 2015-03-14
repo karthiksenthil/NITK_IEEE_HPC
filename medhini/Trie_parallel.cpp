@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
 
@@ -67,6 +68,7 @@ void insert(trie_t *pTrie, char key[])
     pTrie->count++;
     pCrawl = pTrie->root;
 
+#pragma omp parallel for schedule(dynamic,1)
     for( level = 0; level < length; level++ )
     {
         index = CHAR_TO_INDEX(key[level]);
@@ -92,6 +94,7 @@ int search(trie_t *pTrie, char key[])
 
     pCrawl = pTrie->root;
 
+#pragma omp parallel for schedule(dynamic,1)
     for( level = 0; level < length; level++ )
     {
         index = CHAR_TO_INDEX(key[level]);
@@ -119,7 +122,6 @@ int main()
     initialize(&trie);
 
     // Construct trie
-    
     for(int i = 0; i < ARRAY_SIZE(keys); i++)
     {
         insert(&trie, keys[i]);
