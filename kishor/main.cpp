@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -241,6 +242,9 @@ main(int argc, char *argv[])
 {
   /* perform initialization NOT OpenGL/GLUT dependent,
      as we haven't created a GLUT window yet */
+  struct timeval tim;
+  gettimeofday(&tim, NULL);
+  double t1 = tim.tv_sec + (tim.tv_usec/1000000.0);
   init();
 
   /* initialize GLUT, let it extract command-line 
@@ -265,7 +269,11 @@ main(int argc, char *argv[])
 
   /* register function that draws in the window */
   glutDisplayFunc(display);
-
+  gettimeofday(&tim,NULL);
+  double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
+  
+  printf("%.6lf\n", t2-t1);	
+	
   /* start the GLUT main loop */
   glutMainLoop();
 
