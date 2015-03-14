@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
 
@@ -107,11 +108,19 @@ int search(trie_t *pTrie, char key[])
     return (0 != pCrawl && pCrawl->value);
 }
 
+char keys[1000001][200];
+
 // Driver
 int main()
 {
     // Input keys (use only 'a' through 'z' and lower case)
-    char keys[][8] = {"the", "a", "there", "answer", "any", "by", "bye", "their"};
+    
+
+    for(int i=0;i<1000001;i++)
+    {
+        scanf("%s",keys[i]);
+    }
+
     trie_t trie;
 
     char output[][32] = {"Not present in trie", "Present in trie"};
@@ -119,11 +128,17 @@ int main()
     initialize(&trie);
 
     // Construct trie
-    
+    struct timeval tim;
+    gettimeofday(&tim, NULL);
+    double t1 = tim.tv_sec + (tim.tv_usec/1000000.0);
     for(int i = 0; i < ARRAY_SIZE(keys); i++)
     {
         insert(&trie, keys[i]);
     }
+    gettimeofday(&tim,NULL);
+    double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
+
+    printf("Insertion into trie time : %.6lf\n", t2-t1); 
 
     // Search for different keys
     printf("%s --- %s\n", "the", output[search(&trie, "the")] );

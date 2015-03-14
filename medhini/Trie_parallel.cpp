@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <omp.h>
+#include <sys/time.h>
 
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
 
@@ -66,12 +67,16 @@ void insert(trie_t *pTrie, char key[])
     trie_node_t *pCrawl;
 
     pTrie->count++;
-    pCrawl = pTrie->root;
+    
 
-#pragma omp parallel for schedule(dynamic,1)
+// #pragma omp parallel
+// {
+    pCrawl = pTrie->root;
+    // #pragma omp for schedule(dynamic,1)
     for( level = 0; level < length; level++ )
     {
         index = CHAR_TO_INDEX(key[level]);
+        // printf("%d\n",index);
         if( !pCrawl->children[index] )
         {
             pCrawl->children[index] = getNode();
@@ -82,6 +87,8 @@ void insert(trie_t *pTrie, char key[])
 
     // mark last node as leaf
     pCrawl->value = pTrie->count;
+// }
+
 }
 
 // Returns non zero, if key presents in trie
@@ -94,7 +101,7 @@ int search(trie_t *pTrie, char key[])
 
     pCrawl = pTrie->root;
 
-#pragma omp parallel for schedule(dynamic,1)
+// #pragma omp parallel for schedule(dynamic,1)
     for( level = 0; level < length; level++ )
     {
         index = CHAR_TO_INDEX(key[level]);
@@ -110,11 +117,19 @@ int search(trie_t *pTrie, char key[])
     return (0 != pCrawl && pCrawl->value);
 }
 
+    char keys[1000001][200];
+
 // Driver
 int main()
 {
     // Input keys (use only 'a' through 'z' and lower case)
-    char keys[][8] = {"the", "a", "there", "answer", "any", "by", "bye", "their"};
+
+
+    for(int i=0;i<1000000;i++)
+    {
+        scanf("%s",keys[i]);
+    }
+
     trie_t trie;
 
     char output[][32] = {"Not present in trie", "Present in trie"};
@@ -122,10 +137,21 @@ int main()
     initialize(&trie);
 
     // Construct trie
+    struct timeval tim;
+    gettimeofday(&tim, NULL);
+    double t1 = tim.tv_sec + (tim.tv_usec/1000000.0);
+    
+#pragma omp parallel for schedule(dynamic,5) shared(trie)
     for(int i = 0; i < ARRAY_SIZE(keys); i++)
     {
         insert(&trie, keys[i]);
     }
+    
+    gettimeofday(&tim,NULL);
+    double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
+
+    printf("Parallel insertion into trie time : %.6lf\n", t2-t1); 
+
 
     // Search for different keys
     printf("%s --- %s\n", "the", output[search(&trie, "the")] );
