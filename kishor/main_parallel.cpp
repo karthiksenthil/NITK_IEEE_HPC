@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <omp.h>
 
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -28,6 +29,8 @@ DIRECTION direction[NSPHERES];
 double focalDist;
 double color;
 double lightIntensity, ambLightIntensity;
+
+int count;
 
 /* init function */
 void init()
@@ -119,17 +122,22 @@ display(void)
   glClearColor(1.0, 1.0, 1.0, 0.0);
   /* clear pixels */
   glClear(GL_COLOR_BUFFER_BIT);
-
+  omp_set_num_threads(4);
   /* Ray Tracing! */
+  // printf("X-Range :%d\n",viewport.xvmax - viewport.xvmin);
+    #pragma omp parallel for schedule(dynamic,1) if(count==0)
+  // {
   for (int i=0; i<(viewport.xvmax - viewport.xvmin); i++)
     {
+        //#pragma omp for
         for (int j=0; j<(viewport.yvmax - viewport.yvmin); j++)
         {
+            // printf("Thread %d takes i:%d j:%d\n",omp_get_thread_num(),i,j);
             int intersection_object = -1; // none
             int reflected_intersection_object = -1; // none
             double current_lambda = 0x7fefffffffffffff; // maximum positive double
             double current_reflected_lambda = 0x7fefffffffffffff; // maximum positive double
-
+            //printf("Yo\n");
             RAY ray, shadow_ray, reflected_ray;
             PIXEL pixel;
             SPHERE_INTERSECTION intersection, current_intersection, shadow_ray_intersection, reflected_ray_intersection, current_reflected_intersection;
@@ -146,6 +154,7 @@ display(void)
             compute_ray(&ray, &view_point, &viewport, &pixel, &camera_frame, focalDist);
             
             // check if ray hits an object:
+            #pragma omp parallel for schedule(dynamic,1) if(count==0)
             for (int k=0; k<NSPHERES; k++)
             {
                 if (sphere_intersection(&ray, &sphere[k], &intersection))
@@ -216,9 +225,10 @@ display(void)
             current_reflected_lambda = 0x7fefffffffffffff;
         }
     }
-
+  // }
   glFlush();
   glutSwapBuffers();
+  count++;
 }
 
 /* Called when window is resized,
@@ -272,8 +282,8 @@ main(int argc, char *argv[])
   gettimeofday(&tim,NULL);
   double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
   
-  printf("%.6lf\n", t2-t1);	
-	
+  printf("%.6lf\n", t2-t1); 
+    
   /* start the GLUT main loop */
   glutMainLoop();
 
