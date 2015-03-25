@@ -12,12 +12,12 @@
 #include "ray.h"
 
 #define NSPHERES 3
-#define VIEWPLANE 200
-#define WINDOW VIEWPLANE*2
 #define FOCALDIST 1500
 #define RADIUS 150
 
 int wd;                   /* GLUT window handle */
+int VIEWPLANE;
+int WINDOW;
 
 BASIS camera_frame;
 VECTOR3D view_point;
@@ -250,6 +250,8 @@ reshape(int w, int h)
 int
 main(int argc, char *argv[])
 {
+  VIEWPLANE = atoi(argv[1]);
+  WINDOW = 2 * VIEWPLANE;
   /* perform initialization NOT OpenGL/GLUT dependent,
      as we haven't created a GLUT window yet */
   struct timeval tim;
@@ -279,6 +281,7 @@ main(int argc, char *argv[])
 
   /* register function that draws in the window */
   glutDisplayFunc(display);
+  glutDestroyWindow(wd);
   gettimeofday(&tim,NULL);
   double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
   
