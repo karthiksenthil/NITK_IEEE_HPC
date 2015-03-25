@@ -25,4 +25,4 @@ Ray Tracer
 
 ## Graph Generation
 
-'$ ./autogen.sh [seq|par]'
+`$ ./autogen.sh [seq|par]`
