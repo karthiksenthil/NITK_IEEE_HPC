@@ -1,0 +1,41 @@
+Moves: 60
+
+##manual input
+seq:
+Time 0.000657
+Time 0.001088
+Time 0.001089
+Time 0.001151
+Time 0.001093
+Time 0.001087
+Time 0.001154
+Time 0.000659
+
+
+##comp
+seq:
+Time 8.877267
+Time 8.851186
+Time 5.828761
+Time 7.495252
+Time 7.799252
+Time 6.143958
+Time 9.779418
+
+parallel1:
+Time 7.678379
+Time 8.507925
+Time 7.426752
+Time 9.309196
+Time 8.112665
+Time 16.188813
+Time 8.638490
+
+
+Parallel2:
+Time 5.382923
+Time 10.399764
+Time 7.954614
+Time 13.398964
+Time 6.869593
+Time 7.661842
