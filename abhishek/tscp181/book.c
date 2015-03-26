@@ -14,7 +14,6 @@
 #include "data.h"
 #include "protos.h"
 
-
 /* the opening book file, declared here so we don't have to include stdio.h in
    a header file */
 FILE *book_file;

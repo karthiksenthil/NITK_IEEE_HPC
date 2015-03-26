@@ -8,7 +8,6 @@
 
 #include "defs.h"
 
-
 /* the board representation */
 int color[64];  /* LIGHT, DARK, or EMPTY */
 int piece[64];  /* PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, or EMPTY */

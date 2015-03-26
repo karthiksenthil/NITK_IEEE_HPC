@@ -11,7 +11,6 @@
 #include "data.h"
 #include "protos.h"
 
-
 #define DOUBLED_PAWN_PENALTY		10
 #define ISOLATED_PAWN_PENALTY		20
 #define BACKWARDS_PAWN_PENALTY		8
@@ -147,6 +146,10 @@ int eval()
 	/* this is the second pass: evaluate each piece */
 	score[LIGHT] = piece_mat[LIGHT] + pawn_mat[LIGHT];
 	score[DARK] = piece_mat[DARK] + pawn_mat[DARK];
+	
+	#pragma omp parallel 
+	{
+	#pragma omp for schedule(auto)
 	for (i = 0; i < 64; ++i) {
 		if (color[i] == EMPTY)
 			continue;
@@ -208,6 +211,7 @@ int eval()
 					break;
 			}
 		}
+	}
 	}
 
 	/* the score[] array is set, now return the score relative

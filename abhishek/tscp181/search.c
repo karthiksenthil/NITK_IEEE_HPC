@@ -12,7 +12,6 @@
 #include "data.h"
 #include "protos.h"
 
-
 /* see the beginning of think() */
 #include <setjmp.h>
 jmp_buf env;
@@ -193,7 +192,7 @@ int quiesce(int alpha,int beta)
 	gen_caps();
 	if (follow_pv)  /* are we following the PV? */
 		sort_pv();
-
+	
 	/* loop through the moves */
 	for (i = first_move[ply]; i < first_move[ply + 1]; ++i) {
 		sort(i);
@@ -208,11 +207,14 @@ int quiesce(int alpha,int beta)
 
 			/* update the PV */
 			pv[ply][ply] = gen_dat[i].m;
+			//omp_set_num_threads(2);
+			#pragma omp parallel for
 			for (j = ply + 1; j < pv_length[ply + 1]; ++j)
 				pv[ply][j] = pv[ply + 1][j];
 			pv_length[ply] = pv_length[ply + 1];
 		}
 	}
+	
 	return alpha;
 }
 

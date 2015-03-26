@@ -11,7 +11,6 @@
 #include "data.h"
 #include "protos.h"
 
-
 /* init_board() sets the board to the initial game state. */
 
 void init_board()

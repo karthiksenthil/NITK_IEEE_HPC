@@ -13,7 +13,7 @@
 #include "defs.h"
 #include "data.h"
 #include "protos.h"
-
+ #include <sys/time.h>
 
 /* get_ms() returns the milliseconds elapsed since midnight,
    January 1, 1970. */
@@ -40,6 +40,11 @@ int main()
 	char s[256];
 	int m;
 
+	struct timeval t1,t2;
+	time_t curtime;
+	gettimeofday(&t1,NULL);
+
+	/*
 	printf("\n");
 	printf("Tom Kerrigan's Simple Chess Program (TSCP)\n");
 	printf("version 1.81, 2/5/03\n");
@@ -47,10 +52,12 @@ int main()
 	printf("\n");
 	printf("\"help\" displays a list of commands.\n");
 	printf("\n");
+	*/
 	init_hash();
 	init_board();
 	open_book();
 	gen();
+	gettimeofday(&t1,NULL);
 	computer_side = EMPTY;
 	max_time = 1 << 25;
 	max_depth = 4;
@@ -73,7 +80,7 @@ int main()
 		}
 
 		/* get user input */
-		printf("tscp> ");
+		//printf("tscp> ");
 		if (scanf("%s", s) == EOF)
 			return 0;
 		if (!strcmp(s, "on")) {
@@ -120,7 +127,7 @@ int main()
 			continue;
 		}
 		if (!strcmp(s, "bye")) {
-			printf("Share and enjoy!\n");
+			//printf("Share and enjoy!\n");
 			break;
 		}
 		if (!strcmp(s, "xboard")) {
@@ -152,7 +159,11 @@ int main()
 			print_result();
 		}
 	}
+	gettimeofday(&t2,NULL);
+	printf("\nTime %Lf\n",((t2.tv_sec-t1.tv_sec)*(long double)1000000.0 + t2.tv_usec-t1.tv_usec)/1000000 );
+	
 	close_book();
+	
 	return 0;
 }
 
@@ -246,7 +257,7 @@ char *move_str(move_bytes m)
 void print_board()
 {
 	int i;
-	
+	/*
 	printf("\n8 ");
 	for (i = 0; i < 64; ++i) {
 		switch (color[i]) {
@@ -264,6 +275,7 @@ void print_board()
 			printf("\n%d ", 7 - ROW(i));
 	}
 	printf("\n\n   a b c d e f g h\n\n");
+	*/
 }
 
 
@@ -487,15 +499,15 @@ void bench()
 	for (i = 0; i < 3; ++i) {
 		think(1);
 		t[i] = get_ms() - start_time;
-		printf("Time: %d ms\n", t[i]);
+		//printf("Time: %d ms\n", t[i]);
 	}
 	if (t[1] < t[0])
 		t[0] = t[1];
 	if (t[2] < t[0])
 		t[0] = t[2];
-	printf("\n");
-	printf("Nodes: %d\n", nodes);
-	printf("Best time: %d ms\n", t[0]);
+	//printf("\n");
+	//printf("Nodes: %d\n", nodes);
+	//printf("Best time: %d ms\n", t[0]);
 	if (!ftime_ok) {
 		printf("\n");
 		printf("Your compiler's ftime() function is apparently only accurate\n");
@@ -512,7 +524,7 @@ void bench()
 	nps *= 1000.0;
 
 	/* Score: 1.000 = my Athlon XP 2000+ */
-	printf("Nodes per second: %d (Score: %.3f)\n", (int)nps, (float)nps/243169.0);
+	//printf("Nodes per second: %d (Score: %.3f)\n", (int)nps, (float)nps/243169.0);
 
 	init_board();
 	open_book();
