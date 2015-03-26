@@ -1,0 +1,43 @@
+Power Set is of Size: 100
+
+Sequential Running time:
+7.79629e-05
+
+Parallel Running time with number of threads as 8:
+0.00638294
+
+
+Power Set is of Size 10000:
+
+Sequential Running time:
+0.00675106
+
+Parallel Running time with number of threads as 8:
+0.00575018
+
+Power Set is of Size 1000000:
+
+Sequential Running time:
+0.485235
+
+Parallel Running time with number of threads as 8:
+0.453911
+
+Power Set is of Size 100000000:
+
+Sequential Running time:
+82.8956
+
+Parallel Running time with number of threads as 8:
+81.2538
+
+Power Set is of Size 10000000000:
+
+Sequential Running time:
+662.923
+
+Parallel Running time with number of threads as 8:
+786.508
+
+Prallel Running time with number of threads as 16:
+747.143

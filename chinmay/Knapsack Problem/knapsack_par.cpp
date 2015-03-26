@@ -3,26 +3,28 @@
 #include <math.h>
 #include <sys/time.h>
 #include <omp.h>
-#define SET_SIZE 20
-#define THRESHOLD 40
+#define SET_SIZE 30
+#define THRESHOLD 1000
 
 using namespace std;
+
+int v[SET_SIZE], w[SET_SIZE];
 
 void power_set(int v[], int w[])
 {
   	// vector<int> p;
+  	cout<<"inside";
   	long long int max=-1;
 	struct timeval tim1, tim2;
-
-	long long int two_n = pow(2, SET_SIZE);	
+	int po = SET_SIZE;
+	unsigned long long int two_n = pow(2, po);	
 	
-	// cout<<"heee";
-	omp_set_num_threads(8);
+	omp_set_num_threads(16);
 
 
 	gettimeofday(&tim1, NULL);
 	#pragma omp parallel for shared(max)
-	for(long long int i = 0; i < two_n ; i++)
+	for(unsigned long long int i = 0; i < two_n ; i++)
 	{
 		vector<int> p;
 		int m  = i;
@@ -62,15 +64,11 @@ void power_set(int v[], int w[])
 
 int main()
 {
-	int v[SET_SIZE];
-	int w[SET_SIZE];
-
 	for(int i=0;i<SET_SIZE;i++)
 		cin>>v[i];
 
 	for(int i=0;i<SET_SIZE;i++)
 		cin>>w[i];
-	// cout<<"heee";
 
 	power_set(v, w);
 }
