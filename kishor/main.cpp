@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-
+#include <unistd.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "defs.h"
@@ -272,6 +272,7 @@ main(int argc, char *argv[])
 
   /* register function that draws in the window */
   glutDisplayFunc(display);
+  usleep(2000000);
   glutDestroyWindow(wd);
   gettimeofday(&tim,NULL);
   double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
