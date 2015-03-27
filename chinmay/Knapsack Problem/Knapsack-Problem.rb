@@ -4,19 +4,19 @@ val = []
 weight = []
 
  puts "Input value array:"
- for i in 0..19
+ for i in 0..9
  	j = gets.chomp
  	val << j.to_i
  end
 
  puts "Input weight array:"
- for i in 0..19
+ for i in 0..9
  	j = gets.chomp	
  	weight << j.to_i
  end
 
  puts "Input weight of the Knapsack"
- w = 40
+ w = 1000
 
  n = val.length
 
