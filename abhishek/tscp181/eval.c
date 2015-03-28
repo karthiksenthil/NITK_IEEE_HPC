@@ -1,11 +1,3 @@
-/*
- *	EVAL.C
- *	Tom Kerrigan's Simple Chess Program (TSCP)
- *
- *	Copyright 1997 Tom Kerrigan
- */
-
-
 #include <string.h>
 #include "defs.h"
 #include "data.h"
@@ -147,9 +139,7 @@ int eval()
 	score[LIGHT] = piece_mat[LIGHT] + pawn_mat[LIGHT];
 	score[DARK] = piece_mat[DARK] + pawn_mat[DARK];
 	
-	#pragma omp parallel 
-	{
-	#pragma omp for schedule(auto)
+	#pragma omp parallel for schedule(auto) 
 	for (i = 0; i < 64; ++i) {
 		if (color[i] == EMPTY)
 			continue;
@@ -211,7 +201,6 @@ int eval()
 					break;
 			}
 		}
-	}
 	}
 
 	/* the score[] array is set, now return the score relative

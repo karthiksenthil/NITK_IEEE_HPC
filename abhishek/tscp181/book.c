@@ -1,11 +1,3 @@
-/*
- *	BOOK.C
- *	Tom Kerrigan's Simple Chess Program (TSCP)
- *
- *	Copyright 1997 Tom Kerrigan
- */
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
