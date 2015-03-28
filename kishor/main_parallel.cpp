@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <string.h>
 #include "defs.h"
 #include "vectors.h"
 #include "sphere.h"
@@ -252,6 +253,7 @@ main(int argc, char *argv[])
 {
   VIEWPLANE = atoi(argv[1]);
   WINDOW = 2 * VIEWPLANE;
+
   /* perform initialization NOT OpenGL/GLUT dependent,
      as we haven't created a GLUT window yet */
   struct timeval tim;
@@ -282,7 +284,8 @@ main(int argc, char *argv[])
   /* register function that draws in the window */
   glutDisplayFunc(display);
   usleep(2000000);
-  glutDestroyWindow(wd);
+  if (!strcmp(argv[2], "skip"))
+  	glutDestroyWindow(wd);
   gettimeofday(&tim,NULL);
   double t2 = tim.tv_sec + (tim.tv_usec/1000000.0);
   
