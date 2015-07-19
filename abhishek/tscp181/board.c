@@ -1,11 +1,3 @@
-/*
- *	BOARD.C
- *	Tom Kerrigan's Simple Chess Program (TSCP)
- *
- *	Copyright 1997 Tom Kerrigan
- */
-
-
 #include <stdlib.h>
 #include "defs.h"
 #include "data.h"

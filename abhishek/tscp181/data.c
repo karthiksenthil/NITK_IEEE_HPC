@@ -1,11 +1,3 @@
-/*
- *	DATA.C
- *	Tom Kerrigan's Simple Chess Program (TSCP)
- *
- *	Copyright 1997 Tom Kerrigan
- */
-
-
 #include "defs.h"
 
 /* the board representation */

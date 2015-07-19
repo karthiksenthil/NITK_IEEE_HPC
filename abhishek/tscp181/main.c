@@ -1,11 +1,3 @@
-/*
- *	MAIN.C
- *	Tom Kerrigan's Simple Chess Program (TSCP)
- *
- *	Copyright 1997 Tom Kerrigan
- */
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,15 +36,6 @@ int main()
 	time_t curtime;
 	gettimeofday(&t1,NULL);
 
-	/*
-	printf("\n");
-	printf("Tom Kerrigan's Simple Chess Program (TSCP)\n");
-	printf("version 1.81, 2/5/03\n");
-	printf("Copyright 1997 Tom Kerrigan\n");
-	printf("\n");
-	printf("\"help\" displays a list of commands.\n");
-	printf("\n");
-	*/
 	init_hash();
 	init_board();
 	open_book();
@@ -79,8 +62,7 @@ int main()
 			continue;
 		}
 
-		/* get user input */
-		//printf("tscp> ");
+		
 		if (scanf("%s", s) == EOF)
 			return 0;
 		if (!strcmp(s, "on")) {
@@ -102,21 +84,7 @@ int main()
 			max_time = 1 << 25;
 			continue;
 		}
-		if (!strcmp(s, "undo")) {
-			if (!hply)
-				continue;
-			computer_side = EMPTY;
-			takeback();
-			ply = 0;
-			gen();
-			continue;
-		}
-		if (!strcmp(s, "new")) {
-			computer_side = EMPTY;
-			init_board();
-			gen();
-			continue;
-		}
+		
 		if (!strcmp(s, "d")) {
 			print_board();
 			continue;
@@ -130,21 +98,16 @@ int main()
 			//printf("Share and enjoy!\n");
 			break;
 		}
-		if (!strcmp(s, "xboard")) {
-			xboard();
-			break;
-		}
+		
 		if (!strcmp(s, "help")) {
 			printf("on - computer plays for the side to move\n");
 			printf("off - computer stops playing\n");
 			printf("st n - search for n seconds per move\n");
 			printf("sd n - search n ply per move\n");
-			printf("undo - takes back a move\n");
 			printf("new - starts a new game\n");
 			printf("d - display the board\n");
 			printf("bench - run the built-in benchmark\n");
 			printf("bye - exit the program\n");
-			printf("xboard - switch to XBoard mode\n");
 			printf("Enter moves in coordinate notation, e.g., e2e4, e7e8Q\n");
 			continue;
 		}
@@ -279,139 +242,6 @@ void print_board()
 }
 
 
-/* xboard() is a substitute for main() that is XBoard
-   and WinBoard compatible. See the following page for details:
-   http://www.research.digital.com/SRC/personal/mann/xboard/engine-intf.html */
-
-void xboard()
-{
-	int computer_side;
-	char line[256], command[256];
-	int m;
-	int post = 0;
-
-	signal(SIGINT, SIG_IGN);
-	printf("\n");
-	init_board();
-	gen();
-	computer_side = EMPTY;
-	for (;;) {
-		fflush(stdout);
-		if (side == computer_side) {
-			think(post);
-			if (!pv[0][0].u) {
-				computer_side = EMPTY;
-				continue;
-			}
-			printf("move %s\n", move_str(pv[0][0].b));
-			makemove(pv[0][0].b);
-			ply = 0;
-			gen();
-			print_result();
-			continue;
-		}
-		if (!fgets(line, 256, stdin))
-			return;
-		if (line[0] == '\n')
-			continue;
-		sscanf(line, "%s", command);
-		if (!strcmp(command, "xboard"))
-			continue;
-		if (!strcmp(command, "new")) {
-			init_board();
-			gen();
-			computer_side = DARK;
-			continue;
-		}
-		if (!strcmp(command, "quit"))
-			return;
-		if (!strcmp(command, "force")) {
-			computer_side = EMPTY;
-			continue;
-		}
-		if (!strcmp(command, "white")) {
-			side = LIGHT;
-			xside = DARK;
-			gen();
-			computer_side = DARK;
-			continue;
-		}
-		if (!strcmp(command, "black")) {
-			side = DARK;
-			xside = LIGHT;
-			gen();
-			computer_side = LIGHT;
-			continue;
-		}
-		if (!strcmp(command, "st")) {
-			sscanf(line, "st %d", &max_time);
-			max_time *= 1000;
-			max_depth = 32;
-			continue;
-		}
-		if (!strcmp(command, "sd")) {
-			sscanf(line, "sd %d", &max_depth);
-			max_time = 1 << 25;
-			continue;
-		}
-		if (!strcmp(command, "time")) {
-			sscanf(line, "time %d", &max_time);
-			max_time *= 10;
-			max_time /= 30;
-			max_depth = 32;
-			continue;
-		}
-		if (!strcmp(command, "otim")) {
-			continue;
-		}
-		if (!strcmp(command, "go")) {
-			computer_side = side;
-			continue;
-		}
-		if (!strcmp(command, "hint")) {
-			think(0);
-			if (!pv[0][0].u)
-				continue;
-			printf("Hint: %s\n", move_str(pv[0][0].b));
-			continue;
-		}
-		if (!strcmp(command, "undo")) {
-			if (!hply)
-				continue;
-			takeback();
-			ply = 0;
-			gen();
-			continue;
-		}
-		if (!strcmp(command, "remove")) {
-			if (hply < 2)
-				continue;
-			takeback();
-			takeback();
-			ply = 0;
-			gen();
-			continue;
-		}
-		if (!strcmp(command, "post")) {
-			post = 2;
-			continue;
-		}
-		if (!strcmp(command, "nopost")) {
-			post = 0;
-			continue;
-		}
-		m = parse_move(line);
-		if (m == -1 || !makemove(gen_dat[m].m.b))
-			printf("Error (unknown command): %s\n", command);
-		else {
-			ply = 0;
-			gen();
-			print_result();
-		}
-	}
-}
-
-
 /* print_result() checks to see if the game is over, and if so,
    prints the result. */
 
@@ -499,15 +329,15 @@ void bench()
 	for (i = 0; i < 3; ++i) {
 		think(1);
 		t[i] = get_ms() - start_time;
-		//printf("Time: %d ms\n", t[i]);
+		printf("Time: %d ms\n", t[i]);
 	}
 	if (t[1] < t[0])
 		t[0] = t[1];
 	if (t[2] < t[0])
 		t[0] = t[2];
-	//printf("\n");
-	//printf("Nodes: %d\n", nodes);
-	//printf("Best time: %d ms\n", t[0]);
+	printf("\n");
+	printf("Nodes: %d\n", nodes);
+	printf("Best time: %d ms\n", t[0]);
 	if (!ftime_ok) {
 		printf("\n");
 		printf("Your compiler's ftime() function is apparently only accurate\n");
@@ -524,7 +354,7 @@ void bench()
 	nps *= 1000.0;
 
 	/* Score: 1.000 = my Athlon XP 2000+ */
-	//printf("Nodes per second: %d (Score: %.3f)\n", (int)nps, (float)nps/243169.0);
+	printf("Nodes per second: %d (Score: %.3f)\n", (int)nps, (float)nps/243169.0);
 
 	init_board();
 	open_book();

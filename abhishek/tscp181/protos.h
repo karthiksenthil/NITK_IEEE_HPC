@@ -52,6 +52,5 @@ int main();
 int parse_move(char *s);
 char *move_str(move_bytes m);
 void print_board();
-void xboard();
 void print_result();
 void bench();
